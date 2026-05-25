@@ -50,6 +50,19 @@ def random_coord(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> t
 
     return (x, y)
 
+def has_failed(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> bool:
+    x, y = snake[0]
+    if (x, y) in snake[1:]:
+        return True
+
+    if x < 0 or x >= field_size[0]:
+        return True
+
+    if y < 0 or y >= field_size[1]:
+        return True
+
+    return False
+
 pg.init()
 
 width = 800
@@ -80,6 +93,11 @@ while running:
                 direction = (-1, 0)
             if event.key == pg.K_l and direction != (-1, 0):
                 direction = (1, 0)
+
+    if has_failed(snake, field_size):
+        snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
+        direction: tuple[int, int] = (1, 0)
+        food: tuple[int, int] = random_coord(snake, field_size)
 
     if snake[0] == food:
         snake = consume_food(snake)
