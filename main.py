@@ -2,17 +2,29 @@ import pygame as pg
 import sys
 import random
 
+BACKGROUND_DARK = (30, 35, 38)
+BACKGROUND_LIGHT = (38, 44, 48)
+GRID_LINE = (65, 72, 78)
+SNAKE_FILL = (70, 185, 90)
+SNAKE_BORDER = (45, 140, 65)
+FOOD_FILL = (210, 70, 70)
+FOOD_BORDER = (160, 45, 45)
+
 def draw_grid(screen, width: int, heigth: int, block_size: int) -> None:
-    screen.fill((50, 50, 50))
     for x in range(0, width, block_size):
         for y in range(0, heigth, block_size):
             rect = pg.Rect(x, y, block_size, block_size)
-            pg.draw.rect(screen, (255, 255, 255), rect, 1)
+            if (x // block_size + y // block_size) % 2 == 0:
+                pg.draw.rect(screen, BACKGROUND_DARK, rect)
+            else:
+                pg.draw.rect(screen, BACKGROUND_LIGHT, rect)
+            pg.draw.rect(screen, GRID_LINE, rect, 1)
 
-def draw_snake(snake: list[tuple[int, int]], block_size) -> None:
+def draw_snake(screen, snake: list[tuple[int, int]], block_size: int) -> None:
     for x, y in snake:
         rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
-        pg.draw.rect(screen, (50, 200, 50), rect)
+        pg.draw.rect(screen, SNAKE_FILL, rect)
+        pg.draw.rect(screen, SNAKE_BORDER, rect, 1)
 
 def move_snake( snake: list[tuple[int, int]], direction: tuple[int, int]) -> list[tuple[int, int]]:
     snake_moved: list[tuple[int, int]] = []
@@ -39,9 +51,10 @@ def consume_food(snake: list[tuple[int, int]]) -> list[tuple[int, int]]:
 def draw_food(screen, coords: tuple[int, int], block_size: int) -> None:
     x, y = coords
     rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
-    pg.draw.rect(screen, (200, 50, 50), rect)
+    pg.draw.rect(screen, FOOD_FILL, rect)
+    pg.draw.rect(screen, FOOD_BORDER, rect, 2)
 
-def random_coord(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> tuple[int, int]:
+def random_coord( snake: list[tuple[int, int]], field_size: tuple[int, int]) -> tuple[int, int]:
     while True:
         x = random.randint(0, field_size[0] - 1)
         y = random.randint(0, field_size[1] - 1)
@@ -68,7 +81,7 @@ pg.init()
 width = 800
 heigth = 600
 block_size = 40
-screen = pg.display.set_mode((width, heigth))
+screen = pg.display.set_mode((width, heigth), pg.NOFRAME)
 pg.display.set_caption("Vim snake")
 
 running = True
@@ -105,11 +118,11 @@ while running:
 
     snake = move_snake(snake, direction)
     draw_grid(screen, width, heigth, block_size)
-    draw_snake(snake, block_size)
+    draw_snake(screen, snake, block_size)
     draw_food(screen, food, block_size)
 
     pg.display.flip()
-    clock.tick(10)
+    clock.tick(9)
 
 pg.quit()
 sys.exit()
