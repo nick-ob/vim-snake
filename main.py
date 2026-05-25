@@ -14,7 +14,7 @@ def draw_snake(snake: list[tuple[int, int]], block_size) -> None:
         rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
         pg.draw.rect(screen, (50, 200, 50), rect)
 
-def move_snake(snake: list[tuple[int, int]], direction: tuple[int, int]) -> list[tuple[int, int]]:
+def move_snake( snake: list[tuple[int, int]], direction: tuple[int, int]) -> list[tuple[int, int]]:
     snake_moved: list[tuple[int, int]] = []
 
     x_now, y_now = snake[0]
@@ -26,14 +26,27 @@ def move_snake(snake: list[tuple[int, int]], direction: tuple[int, int]) -> list
 
     return snake_moved
 
+def consume_food(snake: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    x_n, y_n = snake[-1]
+    x_n_1, y_n_1 = snake[-2]
+
+    direction: tuple[int, int] = (x_n - x_n_1, y_n - y_n_1)
+    new: tuple[int, int] = (x_n + direction[0], y_n + direction[1])
+
+    snake.append(new)
+    return snake
+
 def draw_food(screen, coords: tuple[int, int], block_size: int) -> None:
     x, y = coords
     rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
     pg.draw.rect(screen, (200, 50, 50), rect)
 
-def random_coord(field_size: tuple[int, int]) -> tuple[int, int]:
-    x = random.randint(0, field_size[0] - 1)
-    y = random.randint(0, field_size[1] - 1)
+def random_coord(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> tuple[int, int]:
+    while True:
+        x = random.randint(0, field_size[0] - 1)
+        y = random.randint(0, field_size[1] - 1)
+        if (x, y) not in snake:
+            break
 
     return (x, y)
 
@@ -49,9 +62,9 @@ running = True
 clock = pg.time.Clock()
 
 field_size: tuple[int, int] = (width // block_size, heigth // block_size)
-snake: list[tuple[int, int]] = [(int((width / block_size) / 2), int((heigth / block_size) / 2))]
+snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
 direction: tuple[int, int] = (1, 0)
-food: tuple[int, int] = random_coord(field_size)
+food: tuple[int, int] = random_coord(snake, field_size)
 
 while running:
     for event in pg.event.get():
@@ -69,8 +82,8 @@ while running:
                 direction = (1, 0)
 
     if snake[0] == food:
-        food = random_coord(field_size)
-        print(food)
+        snake = consume_food(snake)
+        food = random_coord(snake, field_size)
 
     snake = move_snake(snake, direction)
     draw_grid(screen, width, heigth, block_size)
