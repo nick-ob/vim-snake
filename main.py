@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import random
 
+# color "scheme"
 BACKGROUND_DARK = (30, 35, 38)
 BACKGROUND_LIGHT = (38, 44, 48)
 GRID_LINE = (65, 72, 78)
@@ -11,6 +12,7 @@ FOOD_FILL = (210, 70, 70)
 FOOD_BORDER = (160, 45, 45)
 
 def draw_grid(screen, width: int, heigth: int, block_size: int) -> None:
+    # draw an empty grid
     for x in range(0, width, block_size):
         for y in range(0, heigth, block_size):
             rect = pg.Rect(x, y, block_size, block_size)
@@ -21,12 +23,14 @@ def draw_grid(screen, width: int, heigth: int, block_size: int) -> None:
             pg.draw.rect(screen, GRID_LINE, rect, 1)
 
 def draw_snake(screen, snake: list[tuple[int, int]], block_size: int) -> None:
+    # draw the snake
     for x, y in snake:
         rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
         pg.draw.rect(screen, SNAKE_FILL, rect)
         pg.draw.rect(screen, SNAKE_BORDER, rect, 1)
 
 def move_snake( snake: list[tuple[int, int]], direction: tuple[int, int]) -> list[tuple[int, int]]:
+    # move the snake into a direction
     snake_moved: list[tuple[int, int]] = []
 
     x_now, y_now = snake[0]
@@ -39,6 +43,7 @@ def move_snake( snake: list[tuple[int, int]], direction: tuple[int, int]) -> lis
     return snake_moved
 
 def consume_food(snake: list[tuple[int, int]]) -> list[tuple[int, int]]:
+    # extend the snake by food consumtion
     x_n, y_n = snake[-1]
     x_n_1, y_n_1 = snake[-2]
 
@@ -49,12 +54,14 @@ def consume_food(snake: list[tuple[int, int]]) -> list[tuple[int, int]]:
     return snake
 
 def draw_food(screen, coords: tuple[int, int], block_size: int) -> None:
+    # draw food onto the grid
     x, y = coords
     rect = pg.Rect(x * block_size, y * block_size, block_size, block_size)
     pg.draw.rect(screen, FOOD_FILL, rect)
     pg.draw.rect(screen, FOOD_BORDER, rect, 2)
 
 def random_coord( snake: list[tuple[int, int]], field_size: tuple[int, int]) -> tuple[int, int]:
+    # get a random coordinate on the grid
     while True:
         x = random.randint(0, field_size[0] - 1)
         y = random.randint(0, field_size[1] - 1)
@@ -64,6 +71,7 @@ def random_coord( snake: list[tuple[int, int]], field_size: tuple[int, int]) -> 
     return (x, y)
 
 def has_failed(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> bool:
+    # check wether the game is over
     x, y = snake[0]
     if (x, y) in snake[1:]:
         return True
@@ -78,6 +86,7 @@ def has_failed(snake: list[tuple[int, int]], field_size: tuple[int, int]) -> boo
 
 pg.init()
 
+# window initialisation
 width = 800
 heigth = 600
 block_size = 40
@@ -92,11 +101,14 @@ snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
 direction: tuple[int, int] = (1, 0)
 food: tuple[int, int] = random_coord(snake, field_size)
 
+# game loop
 while running:
     for event in pg.event.get():
+        # quitting the app
         if event.type == pg.QUIT:
             running = False
 
+        # snake moving (vim keybinds)
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_k and direction != (0, 1):
                 direction = (0, -1)
@@ -107,15 +119,18 @@ while running:
             if event.key == pg.K_l and direction != (-1, 0):
                 direction = (1, 0)
 
+    # check game end
     if has_failed(snake, field_size):
         snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
         direction: tuple[int, int] = (1, 0)
         food: tuple[int, int] = random_coord(snake, field_size)
 
+    # check food consumption
     if snake[0] == food:
         snake = consume_food(snake)
         food = random_coord(snake, field_size)
 
+    # rerender everything
     snake = move_snake(snake, direction)
     draw_grid(screen, width, heigth, block_size)
     draw_snake(screen, snake, block_size)
@@ -124,5 +139,6 @@ while running:
     pg.display.flip()
     clock.tick(9)
 
+# close the application
 pg.quit()
 sys.exit()
