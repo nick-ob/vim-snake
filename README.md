@@ -46,6 +46,8 @@ vim-snake/
 |-- main.py
 |-- assets/
 |   |-- preview.png
+|-- .gitignore
+|-- README
 |-- LICENSE
 ```
 
