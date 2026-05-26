@@ -17,6 +17,7 @@ a very small and simple game tailored to my very minimal needs.
 ```bash
 # clone this repo
 git clone https://github.com/nick-ob/vim-snake
+cd vim-snake
 
 # install requirements
 python -m pip install pygame
