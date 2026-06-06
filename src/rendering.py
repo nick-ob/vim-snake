@@ -25,10 +25,14 @@ def draw_grid(screen, width: int, heigth: int, block_size: int) -> None:
     for x in range(0, width, block_size):
         for y in range(0, heigth, block_size):
             rect = pg.Rect(x, y, block_size, block_size)
-            if (x // block_size + y // block_size) % 2 == 0:
+            grid_x = x // block_size
+            grid_y = y // block_size
+
+            if (grid_x + grid_y) % 2 == 0:
                 pg.draw.rect(screen, BACKGROUND_DARK, rect)
             else:
                 pg.draw.rect(screen, BACKGROUND_LIGHT, rect)
+
             pg.draw.rect(screen, GRID_LINE, rect, 1)
 
 
