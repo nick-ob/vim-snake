@@ -16,14 +16,14 @@ a very small and simple game tailored to my very minimal needs.
 
 ```bash
 # clone this repo
-git clone https://github.com/nick-ob/vim-snake
+git clone git@github.com:nick-ob/vim-snake.git
 cd vim-snake
 
-# install requirements
-python -m pip install pygame
+# install dependencies
+uv sync
 
 # run the game
-python main.py
+uv run python main.py
 ```
 
 ## How It Works
