@@ -44,12 +44,20 @@ uv run python main.py
 
 ```text
 vim-snake/
-|-- main.py
 |-- assets/
 |   |-- preview.png
+|-- src/
+|   |-- __init__.py
+|   |-- colors.py
+|   |-- game.py
+|   |-- game_logic.py
+|   |-- rendering.py
 |-- .gitignore
-|-- README
 |-- LICENSE
+|-- README.md
+|-- main.py
+|-- pyproject.toml
+|-- uv.lock
 ```
 
 ## Tech Stack
