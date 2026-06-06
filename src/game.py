@@ -13,7 +13,7 @@ def run_game() -> None:
     width = 800
     heigth = 600
     block_size = 40
-    screen = pg.display.set_mode((width, heigth), pg.NOFRAME)
+    screen = pg.display.set_mode((width, heigth))
     pg.display.set_caption("Vim snake")
 
     running = True
@@ -44,9 +44,9 @@ def run_game() -> None:
 
         # check game end
         if has_failed(snake, field_size):
-            snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
-            direction: tuple[int, int] = (1, 0)
-            food: tuple[int, int] = random_coord(snake, field_size)
+            snake = [(7, 7), (8, 8)]
+            direction = (1, 0)
+            food = random_coord(snake, field_size)
 
         # check food consumption
         if snake[0] == food:
