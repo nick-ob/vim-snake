@@ -1,8 +1,10 @@
-import pygame as pg
 import sys
+
+import pygame as pg
 
 from src.game_logic import consume_food, has_failed, move_snake, random_coord
 from src.rendering import draw_food, draw_grid, draw_snake
+
 
 def run_game() -> None:
     pg.init()
