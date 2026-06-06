@@ -16,7 +16,7 @@ a very small and simple game tailored to my very minimal needs.
 
 ```bash
 # clone this repo
-git clone git@github.com:nick-ob/vim-snake.git
+git clone https://github.com/nick-ob/vim-snake.git
 cd vim-snake
 
 # install dependencies
