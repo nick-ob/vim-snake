@@ -12,8 +12,9 @@ def run_game() -> None:
     # window initialisation
     width = 800
     heigth = 600
+    window_size = (width, heigth)
     block_size = 40
-    screen = pg.display.set_mode((width, heigth))
+    screen = pg.display.set_mode(window_size, flags=pg.NOFRAME)
     pg.display.set_caption("Vim snake")
 
     running = True
@@ -35,11 +36,11 @@ def run_game() -> None:
             elif event.type == pg.KEYDOWN:
                 if event.key == pg.K_k and direction != (0, 1):
                     direction = (0, -1)
-                if event.key == pg.K_j and direction != (0, -1):
+                elif event.key == pg.K_j and direction != (0, -1):
                     direction = (0, 1)
-                if event.key == pg.K_h and direction != (1, 0):
+                elif event.key == pg.K_h and direction != (1, 0):
                     direction = (-1, 0)
-                if event.key == pg.K_l and direction != (-1, 0):
+                elif event.key == pg.K_l and direction != (-1, 0):
                     direction = (1, 0)
 
         # check game end
@@ -56,8 +57,8 @@ def run_game() -> None:
         # rerender everything
         snake = move_snake(snake, direction)
         draw_grid(screen, width, heigth, block_size)
-        draw_snake(screen, snake, block_size)
         draw_food(screen, food, block_size)
+        draw_snake(screen, snake, block_size)
 
         pg.display.flip()
         clock.tick(9)
