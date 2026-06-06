@@ -21,7 +21,11 @@ def run_game() -> None:
     clock = pg.time.Clock()
 
     field_size: tuple[int, int] = (width // block_size, heigth // block_size)
-    snake: list[tuple[int, int]] = [(7, 7), (8, 8)]
+    init_snake: list[tuple[int, int]] = [
+        (i, field_size[1] // 2)
+        for i in range(field_size[0] // 2 + 1, field_size[0] // 2 - 3, -1)
+    ]
+    snake: list[tuple[int, int]] = init_snake
     direction: tuple[int, int] = (1, 0)
     food: tuple[int, int] = random_coord(snake, field_size)
 
@@ -45,7 +49,7 @@ def run_game() -> None:
 
         # check game end
         if has_failed(snake, field_size):
-            snake = [(7, 7), (8, 8)]
+            snake = init_snake
             direction = (1, 0)
             food = random_coord(snake, field_size)
 
